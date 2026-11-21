@@ -23,7 +23,11 @@ details = "\n".join(
 ) or "No objects detected."
     warnings = [f'PPE warning: {name} detected ({count})' for name, count in counts.items()
                 if name.lower().replace('_','-').startswith('no-')]
-    return rgb, details + ('
+ return rgb, details + (
+    "\n\n⚠️ PPE VIOLATION DETECTED!"
+    if any(name in SAFETY_VIOLATIONS for name in counts)
+    else ""
+)
 
 ' + '
 '.join(warnings) if warnings else '')
