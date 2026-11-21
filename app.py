@@ -20,12 +20,10 @@ def detect_image(image, conf):
     f"{name}: {n}"
     for name, n in sorted(counts.items())
 ) or "No objects detected."
-
 violation_found = any(
     name in SAFETY_VIOLATIONS
     for name in counts
 )
-
 warning = (
     "\n\n⚠️ PPE VIOLATION DETECTED!"
     if violation_found
