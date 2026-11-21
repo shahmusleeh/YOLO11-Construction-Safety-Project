@@ -16,7 +16,7 @@ def detect_image(image, conf):
     for cls in result.boxes.cls.cpu().numpy().astype(int):
         name = detector.names[int(cls)]
         counts[name] = counts.get(name, 0) + 1
-    details = '
+    details = 
 '.join(f'{name}: {n}' for name, n in sorted(counts.items())) or 'No objects detected.'
     warnings = [f'PPE warning: {name} detected ({count})' for name, count in counts.items()
                 if name.lower().replace('_','-').startswith('no-')]
