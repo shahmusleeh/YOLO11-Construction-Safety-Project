@@ -16,14 +16,23 @@ def detect_image(image, conf):
     for cls in result.boxes.cls.cpu().numpy().astype(int):
         name = detector.names[int(cls)]
         counts[name] = counts.get(name, 0) + 1
-    details = 
-details = "\n".join(
+   details = "\n".join(
     f"{name}: {n}"
     for name, n in sorted(counts.items())
 ) or "No objects detected."
-    warnings = [f'PPE warning: {name} detected ({count})' for name, count in counts.items()
-                if name.lower().replace('_','-').startswith('no-')]
- return rgb, details + (
+
+violation_found = any(
+    name in SAFETY_VIOLATIONS
+    for name in counts
+)
+
+warning = (
+    "\n\n⚠️ PPE VIOLATION DETECTED!"
+    if violation_found
+    else ""
+)
+
+return rgb, details + warning
     "\n\n⚠️ PPE VIOLATION DETECTED!"
     if any(name in SAFETY_VIOLATIONS for name in counts)
     else ""
